@@ -1,0 +1,29 @@
+{
+  "campaign": {
+    "id": "0c2ac161639b49ae95d1646e432400f4",
+    "name": "Test"
+  },
+  "posts": [
+    {
+      "id": "17090fb61c8045d7ba12b72539628d2b",
+      "copy_text": "test campaign",
+      "image": "assets/images/7632e03ea8ba4dc5b087241cac452221.png",
+      "platform": "fb+ig",
+      "sort_order": 0
+    },
+    {
+      "id": "cc950e40b5004235b73da1cd20b6b749",
+      "copy_text": "test campaign 2",
+      "image": "assets/images/8a8cbe403708422181d82f892ffbf0de.jpg",
+      "platform": "fb+ig",
+      "sort_order": 1
+    },
+    {
+      "id": "a53b3e337a264d8090fd270488046c4f",
+      "copy_text": "test campaign 3",
+      "image": "assets/images/f2aa70c8a8b54670a92479ca47313d50.png",
+      "platform": "fb+ig",
+      "sort_order": 2
+    }
+  ]
+}
