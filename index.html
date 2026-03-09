@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test — Content Review</title>
+  <title>Test | Repair Lift Content Review</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -15,10 +15,9 @@
       min-height: 100vh;
     }
 
-    /* ── Header ─────────────────────────────── */
+    /* ── Header (black) ────────────────────── */
     .site-header {
-      background: #fff;
-      border-bottom: 1px solid #e5e5e5;
+      background: #0a0a0a;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -26,36 +25,30 @@
     .header-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 16px 24px;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .header-left { display: flex; align-items: center; gap: 14px; }
-    .logo-circle {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: #C61818;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .logo-circle img { height: 24px; filter: brightness(10); }
-    .header-title { font-size: 18px; font-weight: 700; color: #1a1a1a; }
-    .header-sub { font-size: 12px; color: #888; font-weight: 400; }
+    .header-logo { height: 32px; }
+    .header-divider { width: 1px; height: 28px; background: #333; }
+    .header-title { font-size: 15px; font-weight: 600; color: #fff; }
+    .header-sub { font-size: 11px; color: #666; font-weight: 400; }
     .submit-btn {
       background: #C61818;
       color: white;
       border: none;
       padding: 10px 28px;
-      border-radius: 24px;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
     }
-    .submit-btn:hover { background: #a51414; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(198,24,24,0.3); }
-    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .submit-btn:hover { background: #e02020; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(198,24,24,0.4); }
+    .submit-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
     .submit-btn.done { background: #16a34a; }
 
     /* ── Platform filter tabs ──────────────── */
@@ -140,22 +133,43 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 16px 10px;
+      padding: 14px 16px 8px;
     }
     .card-avatar {
       width: 36px; height: 36px;
       border-radius: 50%;
-      background: #C61818;
+      background: #111;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: white;
       flex-shrink: 0;
+      overflow: hidden;
     }
-    .card-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .card-meta { flex: 1; min-width: 0; }
-    .card-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    .card-name { font-size: 13px; font-weight: 600; color: #1a1a1a; display: flex; align-items: center; gap: 6px; }
     .card-handle { font-size: 11px; color: #999; }
-    .card-platform-icon { color: #999; }
-    .card-platform-icon svg { width: 18px; height: 18px; }
+    .card-platform-icon { display: flex; gap: 4px; align-items: center; }
+
+    /* Scheduled date */
+    .card-schedule {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 16px 8px;
+      font-size: 12px;
+      color: #888;
+    }
+    .card-schedule svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .card-schedule input {
+      font-family: inherit;
+      font-size: 12px;
+      color: #555;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      padding: 4px 8px;
+      background: #fafafa;
+      cursor: pointer;
+    }
+    .card-schedule input:focus { outline: none; border-color: #C61818; background: #fff; }
 
     /* Caption text */
     .card-caption {
@@ -180,28 +194,18 @@
     }
     .card-img:hover { opacity: 0.95; }
 
-    /* Engagement row */
-    .card-engagement {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 10px 16px;
-      border-top: 1px solid #f0f0f0;
-    }
-    .eng-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      color: #999;
-    }
-    .eng-item svg { width: 16px; height: 16px; }
-    .share-btn { margin-left: auto; }
-
     /* ── Review controls ───────────────────── */
     .review-section {
       padding: 10px 16px 14px;
       border-top: 1px solid #f0f0f0;
+    }
+    .review-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
     .copy-edit {
       font-size: 12px;
@@ -256,7 +260,7 @@
     .rev-btn.active-changes { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
     .rev-btn.active-reject { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
 
-    /* ── Status badge on card ──────────────── */
+    /* ── Status badge ──────────────────────── */
     .status-badge {
       display: inline-block;
       font-size: 10px;
@@ -315,13 +319,12 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header — black with logo -->
   <div class="site-header">
     <div class="header-inner">
       <div class="header-left">
-        <div class="logo-circle">
-          <img src="assets/logo.svg" alt="RL" onerror="this.parentElement.innerHTML='<span style=\'font-size:14px;font-weight:700;color:#fff\'>RL</span>'" />
-        </div>
+        <img class="header-logo" src="assets/logo.svg" alt="Repair Lift" onerror="this.outerHTML='<span style=\'color:#C61818;font-weight:700;font-size:18px\'>REPAIR LIFT</span>'" />
+        <div class="header-divider"></div>
         <div>
           <div class="header-title">Test</div>
           <div class="header-sub">Content Review</div>
@@ -334,9 +337,7 @@
   <!-- Platform tabs -->
   <div class="platform-bar">
     <div class="platform-tabs">
-      <div class="ptab active" onclick="filterPlatform('all', this)">
-        ALL
-      </div>
+      <div class="ptab active" onclick="filterPlatform('all', this)">ALL</div>
       <div class="ptab" onclick="filterPlatform('fb', this)">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         Facebook
@@ -370,7 +371,6 @@
     let reviews = {};
     let activeFilter = 'all';
 
-    // Load token from config (split to avoid secret scanning)
     async function loadConfig() {
       try {
         const res = await fetch('data/config.json');
@@ -379,12 +379,13 @@
         REPO_OWNER = cfg.owner;
         REPO_NAME = cfg.repo;
       } catch (e) {
-        console.warn('Config load failed — review submission disabled');
+        console.warn('Config load failed');
       }
     }
 
     const FB_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
     const IG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+    const CLOCK_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 
     function getPlatformIcon(platform) {
       const p = (platform || '').toLowerCase();
@@ -392,6 +393,13 @@
       if (p.includes('fb')) return FB_ICON;
       if (p.includes('ig')) return IG_ICON;
       return FB_ICON + ' ' + IG_ICON;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
     function filterPlatform(filter, el) {
@@ -408,7 +416,7 @@
         renderGrid();
         updateSummary();
       } catch (e) {
-        document.getElementById('grid').innerHTML = '<p style="color:#999;text-align:center;grid-column:1/-1;padding:60px 20px;font-size:14px">Failed to load campaign data.</p>';
+        document.getElementById('grid').innerHTML = '<p style="color:#999;text-align:center;grid-column:1/-1;padding:60px 20px;font-size:14px">No campaign data yet. Publish from the app to see posts here.</p>';
       }
     }
 
@@ -428,34 +436,31 @@
 
         const statusBadge = status ? `<span class="status-badge ${status}">${status === 'approved' ? 'Approved' : status === 'changes' ? 'Changes' : 'Rejected'}</span>` : '';
 
+        const schedDate = review.suggested_date || post.scheduled_date || '';
+        const schedVal = schedDate ? new Date(schedDate).toISOString().slice(0, 16) : '';
+        const schedDisplay = schedDate ? formatDate(schedDate) : 'Not scheduled';
+
         card.innerHTML = `
           <div class="card-profile">
-            <div class="card-avatar">RL</div>
+            <div class="card-avatar">
+              <img src="assets/logo.svg" alt="RL" onerror="this.parentElement.innerHTML='<span style=\'font-size:11px;font-weight:700;color:#fff\'>RL</span>'" />
+            </div>
             <div class="card-meta">
               <div class="card-name">Repair Lift ${statusBadge}</div>
               <div class="card-handle">@repairlift</div>
             </div>
             <div class="card-platform-icon">${getPlatformIcon(post.platform)}</div>
           </div>
+          <div class="card-schedule">
+            ${CLOCK_ICON}
+            <input type="datetime-local" value="${schedVal}" data-id="${post.id}" onchange="onDateChange(this)" title="Scheduled post date" />
+          </div>
           <div class="card-caption">${post.copy_text.length > 140 ? post.copy_text.substring(0, 140) + '...' : post.copy_text}</div>
           <div class="card-img-wrap">
             <img class="card-img" src="${post.image}" alt="" onclick="openLightbox(this.src)" loading="lazy" />
           </div>
-          <div class="card-engagement">
-            <div class="eng-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              <span>—</span>
-            </div>
-            <div class="eng-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              <span>—</span>
-            </div>
-            <div class="eng-item share-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-              Share
-            </div>
-          </div>
           <div class="review-section">
+            <div class="review-label">Review</div>
             <textarea class="copy-edit" data-id="${post.id}" data-original="${encodeURIComponent(post.copy_text)}" oninput="onCopyEdit(this)" placeholder="Edit caption...">${review.edited_copy || post.copy_text}</textarea>
             <textarea class="image-note" data-id="${post.id}" placeholder="Add a note about the image..." rows="1" oninput="onNoteEdit(this)">${review.image_note || ''}</textarea>
             <div class="review-actions">
@@ -499,6 +504,17 @@
       }
     }
 
+    function onDateChange(el) {
+      const id = el.dataset.id;
+      if (!reviews[id]) reviews[id] = {};
+      reviews[id].suggested_date = el.value ? new Date(el.value).toISOString() : null;
+      if (!reviews[id].status) {
+        reviews[id].status = 'changes';
+        renderGrid();
+        updateSummary();
+      }
+    }
+
     function updateSummary() {
       if (!campaignData) return;
       const total = campaignData.posts.length;
@@ -536,6 +552,7 @@
           status: r.status || 'pending',
           edited_copy: r.edited_copy || null,
           image_note: r.image_note || null,
+          suggested_date: r.suggested_date || null,
         })),
       };
 
@@ -579,7 +596,7 @@
           throw new Error('GitHub API error');
         }
       } catch (e) {
-        btn.textContent = 'Error — try again';
+        btn.textContent = 'Error -- try again';
         btn.disabled = false;
         console.error('Submit failed:', e);
       }
