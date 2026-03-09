@@ -9,21 +9,24 @@
       "copy_text": "test campaign",
       "image": "assets/images/7632e03ea8ba4dc5b087241cac452221.png",
       "platform": "fb+ig",
-      "sort_order": 0
+      "sort_order": 0,
+      "scheduled_date": null
     },
     {
       "id": "cc950e40b5004235b73da1cd20b6b749",
       "copy_text": "test campaign 2",
       "image": "assets/images/8a8cbe403708422181d82f892ffbf0de.jpg",
       "platform": "fb+ig",
-      "sort_order": 1
+      "sort_order": 1,
+      "scheduled_date": null
     },
     {
       "id": "a53b3e337a264d8090fd270488046c4f",
       "copy_text": "test campaign 3",
       "image": "assets/images/f2aa70c8a8b54670a92479ca47313d50.png",
       "platform": "fb+ig",
-      "sort_order": 2
+      "sort_order": 2,
+      "scheduled_date": null
     }
   ]
 }
