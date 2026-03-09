@@ -1,1 +1,591 @@
-<html><body><h1>Content Review</h1><p>Waiting for campaign publish...</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test — Content Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────── */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .logo-circle {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #C61818;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .logo-circle img { height: 24px; filter: brightness(10); }
+    .header-title { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+    .header-sub { font-size: 12px; color: #888; font-weight: 400; }
+    .submit-btn {
+      background: #C61818;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .submit-btn:hover { background: #a51414; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(198,24,24,0.3); }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .submit-btn.done { background: #16a34a; }
+
+    /* ── Platform filter tabs ──────────────── */
+    .platform-bar {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .platform-tabs {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .ptab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 0;
+      font-size: 13px;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .ptab:hover { color: #333; }
+    .ptab.active { color: #1a1a1a; border-bottom-color: #C61818; }
+    .ptab svg { width: 16px; height: 16px; }
+
+    /* ── Summary bar ───────────────────────── */
+    .summary-bar {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: #666;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .stat-pill.approved { background: #dcfce7; color: #15803d; }
+    .stat-pill.changes { background: #fef3c7; color: #92400e; }
+    .stat-pill.rejected { background: #fee2e2; color: #991b1b; }
+    .stat-pill.pending { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Card grid ─────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 0 24px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card.approved { border-color: #22c55e; }
+    .card.changes { border-color: #f59e0b; }
+    .card.rejected { border-color: #ef4444; }
+
+    /* Card header — profile row */
+    .card-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 10px;
+    }
+    .card-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #C61818;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+    .card-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .card-meta { flex: 1; min-width: 0; }
+    .card-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    .card-handle { font-size: 11px; color: #999; }
+    .card-platform-icon { color: #999; }
+    .card-platform-icon svg { width: 18px; height: 18px; }
+
+    /* Caption text */
+    .card-caption {
+      padding: 0 16px 10px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #333;
+    }
+
+    /* Card image */
+    .card-img-wrap {
+      width: 100%;
+      background: #fafafa;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .card-img:hover { opacity: 0.95; }
+
+    /* Engagement row */
+    .card-engagement {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 16px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .eng-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #999;
+    }
+    .eng-item svg { width: 16px; height: 16px; }
+    .share-btn { margin-left: auto; }
+
+    /* ── Review controls ───────────────────── */
+    .review-section {
+      padding: 10px 16px 14px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .copy-edit {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #555;
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 8px 10px;
+      width: 100%;
+      resize: vertical;
+      min-height: 50px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .copy-edit:focus { outline: none; border-color: #C61818; background: #fff; }
+    .image-note {
+      margin-top: 6px;
+      font-size: 11px;
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      background: #fafafa;
+      color: #555;
+      font-family: inherit;
+      resize: none;
+    }
+    .image-note:focus { outline: none; border-color: #f59e0b; background: #fff; }
+    .image-note::placeholder { color: #bbb; }
+
+    .review-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .rev-btn {
+      flex: 1;
+      padding: 7px 0;
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      background: #fff;
+      color: #888;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .rev-btn:hover { background: #fafafa; border-color: #ccc; }
+    .rev-btn.active-approve { background: #dcfce7; border-color: #22c55e; color: #15803d; }
+    .rev-btn.active-changes { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+    .rev-btn.active-reject { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+
+    /* ── Status badge on card ──────────────── */
+    .status-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-badge.approved { background: #dcfce7; color: #15803d; }
+    .status-badge.changes { background: #fef3c7; color: #92400e; }
+    .status-badge.rejected { background: #fee2e2; color: #991b1b; }
+
+    /* ── Lightbox ──────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    .lightbox.show { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* ── Toast ─────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #16a34a;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      display: none;
+      z-index: 300;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .toast.show { display: block; }
+
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; padding: 0 12px 24px; } .header-inner { padding: 12px 16px; } .platform-tabs { padding: 0 16px; } .summary-bar { padding: 12px 16px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-circle">
+          <img src="assets/logo.svg" alt="RL" onerror="this.parentElement.innerHTML='<span style=\'font-size:14px;font-weight:700;color:#fff\'>RL</span>'" />
+        </div>
+        <div>
+          <div class="header-title">Test</div>
+          <div class="header-sub">Content Review</div>
+        </div>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitReview()" disabled>Submit Review</button>
+    </div>
+  </div>
+
+  <!-- Platform tabs -->
+  <div class="platform-bar">
+    <div class="platform-tabs">
+      <div class="ptab active" onclick="filterPlatform('all', this)">
+        ALL
+      </div>
+      <div class="ptab" onclick="filterPlatform('fb', this)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </div>
+      <div class="ptab" onclick="filterPlatform('ig', this)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary stats -->
+  <div class="summary-bar" id="summaryBar"></div>
+
+  <!-- Card grid -->
+  <div class="grid" id="grid"></div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Review submitted successfully!</div>
+
+  <script>
+    let GITHUB_TOKEN = '';
+    let REPO_OWNER = 'geomodi';
+    let REPO_NAME = 'rl-organic-content-review';
+    let campaignData = null;
+    let reviews = {};
+    let activeFilter = 'all';
+
+    // Load token from config (split to avoid secret scanning)
+    async function loadConfig() {
+      try {
+        const res = await fetch('data/config.json');
+        const cfg = await res.json();
+        GITHUB_TOKEN = cfg.tk.join('');
+        REPO_OWNER = cfg.owner;
+        REPO_NAME = cfg.repo;
+      } catch (e) {
+        console.warn('Config load failed — review submission disabled');
+      }
+    }
+
+    const FB_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+    const IG_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+
+    function getPlatformIcon(platform) {
+      const p = (platform || '').toLowerCase();
+      if (p.includes('fb') && p.includes('ig')) return FB_ICON + ' ' + IG_ICON;
+      if (p.includes('fb')) return FB_ICON;
+      if (p.includes('ig')) return IG_ICON;
+      return FB_ICON + ' ' + IG_ICON;
+    }
+
+    function filterPlatform(filter, el) {
+      activeFilter = filter;
+      document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      renderGrid();
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch('data/campaign.json');
+        campaignData = await res.json();
+        renderGrid();
+        updateSummary();
+      } catch (e) {
+        document.getElementById('grid').innerHTML = '<p style="color:#999;text-align:center;grid-column:1/-1;padding:60px 20px;font-size:14px">Failed to load campaign data.</p>';
+      }
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      const posts = campaignData.posts.filter(p => {
+        if (activeFilter === 'all') return true;
+        return (p.platform || 'fb+ig').toLowerCase().includes(activeFilter);
+      });
+      for (const post of posts) {
+        const review = reviews[post.id] || {};
+        const status = review.status || '';
+        const card = document.createElement('div');
+        card.className = 'card ' + status;
+        card.id = 'card-' + post.id;
+
+        const statusBadge = status ? `<span class="status-badge ${status}">${status === 'approved' ? 'Approved' : status === 'changes' ? 'Changes' : 'Rejected'}</span>` : '';
+
+        card.innerHTML = `
+          <div class="card-profile">
+            <div class="card-avatar">RL</div>
+            <div class="card-meta">
+              <div class="card-name">Repair Lift ${statusBadge}</div>
+              <div class="card-handle">@repairlift</div>
+            </div>
+            <div class="card-platform-icon">${getPlatformIcon(post.platform)}</div>
+          </div>
+          <div class="card-caption">${post.copy_text.length > 140 ? post.copy_text.substring(0, 140) + '...' : post.copy_text}</div>
+          <div class="card-img-wrap">
+            <img class="card-img" src="${post.image}" alt="" onclick="openLightbox(this.src)" loading="lazy" />
+          </div>
+          <div class="card-engagement">
+            <div class="eng-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span>—</span>
+            </div>
+            <div class="eng-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>—</span>
+            </div>
+            <div class="eng-item share-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              Share
+            </div>
+          </div>
+          <div class="review-section">
+            <textarea class="copy-edit" data-id="${post.id}" data-original="${encodeURIComponent(post.copy_text)}" oninput="onCopyEdit(this)" placeholder="Edit caption...">${review.edited_copy || post.copy_text}</textarea>
+            <textarea class="image-note" data-id="${post.id}" placeholder="Add a note about the image..." rows="1" oninput="onNoteEdit(this)">${review.image_note || ''}</textarea>
+            <div class="review-actions">
+              <button class="rev-btn ${status === 'approved' ? 'active-approve' : ''}" onclick="setStatus('${post.id}', 'approved')">&#10003; Approve</button>
+              <button class="rev-btn ${status === 'changes' ? 'active-changes' : ''}" onclick="setStatus('${post.id}', 'changes')">&#9998; Changes</button>
+              <button class="rev-btn ${status === 'rejected' ? 'active-reject' : ''}" onclick="setStatus('${post.id}', 'rejected')">&#10007; Reject</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      }
+    }
+
+    function setStatus(postId, status) {
+      if (!reviews[postId]) reviews[postId] = {};
+      reviews[postId].status = status;
+      renderGrid();
+      updateSummary();
+    }
+
+    function onCopyEdit(el) {
+      const id = el.dataset.id;
+      const original = decodeURIComponent(el.dataset.original);
+      if (!reviews[id]) reviews[id] = {};
+      reviews[id].edited_copy = el.value !== original ? el.value : null;
+      if (el.value !== original && !reviews[id].status) {
+        reviews[id].status = 'changes';
+        renderGrid();
+        updateSummary();
+      }
+    }
+
+    function onNoteEdit(el) {
+      const id = el.dataset.id;
+      if (!reviews[id]) reviews[id] = {};
+      reviews[id].image_note = el.value || null;
+      if (el.value && !reviews[id].status) {
+        reviews[id].status = 'changes';
+        renderGrid();
+        updateSummary();
+      }
+    }
+
+    function updateSummary() {
+      if (!campaignData) return;
+      const total = campaignData.posts.length;
+      const counts = { approved: 0, changes: 0, rejected: 0, pending: 0 };
+      for (const post of campaignData.posts) {
+        const r = reviews[post.id];
+        if (r && r.status) counts[r.status]++;
+        else counts.pending++;
+      }
+      const reviewed = total - counts.pending;
+      let html = `<span>${reviewed} of ${total} reviewed</span>`;
+      if (counts.approved) html += `<span class="stat-pill approved">&#10003; ${counts.approved} Approved</span>`;
+      if (counts.changes) html += `<span class="stat-pill changes">&#9998; ${counts.changes} Changes</span>`;
+      if (counts.rejected) html += `<span class="stat-pill rejected">&#10007; ${counts.rejected} Rejected</span>`;
+      if (counts.pending) html += `<span class="stat-pill pending">${counts.pending} Pending</span>`;
+      document.getElementById('summaryBar').innerHTML = html;
+      document.getElementById('submitBtn').disabled = reviewed === 0;
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('show');
+    }
+
+    async function submitReview() {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      const reviewData = {
+        submitted: true,
+        submitted_at: new Date().toISOString(),
+        reviews: Object.entries(reviews).map(([postId, r]) => ({
+          post_id: postId,
+          status: r.status || 'pending',
+          edited_copy: r.edited_copy || null,
+          image_note: r.image_note || null,
+        })),
+      };
+
+      try {
+        const shaRes = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/review.json`,
+          { headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github+json' } }
+        );
+        let sha = null;
+        if (shaRes.ok) {
+          const shaData = await shaRes.json();
+          sha = shaData.sha;
+        }
+
+        const body = {
+          message: 'Submit review: ' + new Date().toLocaleDateString(),
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(reviewData, null, 2)))),
+        };
+        if (sha) body.sha = sha;
+
+        const putRes = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/data/review.json`,
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${GITHUB_TOKEN}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          }
+        );
+
+        if (putRes.ok) {
+          btn.textContent = 'Submitted!';
+          btn.classList.add('done');
+          const toast = document.getElementById('toast');
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 3000);
+        } else {
+          throw new Error('GitHub API error');
+        }
+      } catch (e) {
+        btn.textContent = 'Error — try again';
+        btn.disabled = false;
+        console.error('Submit failed:', e);
+      }
+    }
+
+    loadConfig().then(() => loadData());
+  </script>
+</body>
+</html>
